@@ -62,6 +62,7 @@ module.exports = async function rss3Push(core) {
         core.setFailed(`Event not handled : ${github.context.payload.event_name}`);
         break;
     }
+    console.log('hi');
     console.log(post);
 
     try {
