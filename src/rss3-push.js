@@ -15,12 +15,12 @@ module.exports = async function rss3Push(core) {
       privateKey,
     });
 
-    const { event } = github.context.payload;
+    const event = github.context.payload;
 
     const post = {
       tags: ['github', 'buidl'],
     };
-
+    core.debug('event var');
     core.debug(event);
 
     switch (github.context.eventName) {
