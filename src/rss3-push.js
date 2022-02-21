@@ -21,7 +21,7 @@ module.exports = async function rss3Push(core) {
       tags: ['github', 'buidl'],
     };
 
-    switch (github.context.payload.event_name) {
+    switch (github.context.event_name) {
       case 'push':
         post.title = `New commit from ${event.pusher.name} to ${event.repository.full_name}`;
         post.summary = `${event.head_commit.message}`;
@@ -70,7 +70,7 @@ module.exports = async function rss3Push(core) {
       await rss3.items.custom.post(post);
     } catch (err) {
       core.debug('rss3 post failed, double check the endpoint service and private key');
-      core.debug(github.context.payload);
+      core.debug(github.context);
       // core.debug(err);
       core.setFailed(err);
       return;

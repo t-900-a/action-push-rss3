@@ -1,6 +1,6 @@
 {
   "name": "action-push-rss3",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "⚙️ A GitHub Action to push a feed item to RSS3 network ",
   "main": "dist/index.js",
   "scripts": {
@@ -32,7 +32,7 @@
   "dependencies": {
     "@actions/core": "^1.6.0",
     "@actions/github": "^5.0.0",
-    "rss3": "^0.3.11"
+    "rss3": "^0.8.19"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.33.1",
