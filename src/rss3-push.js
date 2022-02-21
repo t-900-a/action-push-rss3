@@ -21,7 +21,7 @@ module.exports = async function rss3Push(core) {
       tags: ['github', 'buidl'],
     };
 
-    core.debug(github.context.eventName);
+    core.debug(event);
 
     switch (github.context.eventName) {
       case 'push':
