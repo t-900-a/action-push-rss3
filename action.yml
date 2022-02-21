@@ -11,5 +11,5 @@ outputs:
   time: # id of output
     description: 'The time'
 runs:
-  using: 'node14'
+  using: 'node16'
   main: 'dist/index.js'
