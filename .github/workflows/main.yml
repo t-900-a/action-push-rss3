@@ -1,0 +1,42 @@
+name: Tests
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  unit_tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: npm ci && npm run build
+    - run: npm test
+
+  integration_test_webhook:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: npm ci && npm run build
+    - run: echo "${{ github.event_name }}"
+    - name: push trigger
+      # Save commit url from GitHub Trigger event payload to URL env
+      if: "contains(github.event_name, 'push')"
+      run: |
+        url=${{ github.event.head_commit.url }}
+        echo "URL=$url" >> "$GITHUB_ENV"
+    - name: pull request trigger
+      # Save pull request url from GitHub Trigger event payload to URL env
+      if: "contains(github.event_name, 'pull_request')"
+      run: |
+        url=${{ github.event.pull_request.url }}
+        echo "URL=$url" >> "$GITHUB_ENV"
+    - name: Post to rss3
+      id: rss3Workflow
+      uses: ./
+      env:
+        PRIVATEKEY: ${{ secrets.PRIVATEKEY }}
+      
+    # Use the output from the `slackWorkflow` step
+    - name: Check Action output is not empty
+      run: test -n "${{ steps.slackWorkflow.outputs.time }}"

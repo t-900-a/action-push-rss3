@@ -1,0 +1,15 @@
+name: 'action-push-rss3'
+description: 'push a feed item to RSS3 network '
+inputs:
+  endpoint: # RSS3 endpoint to use to interact with the RSS3 network
+    description: 'Endpoint to use when pushing the feed item.'
+    required: false
+  privateKey: # private key used to interact with the RSS3 network
+    description: 'Private key to use when pushing the feed item. Derived Public key will be used as your identity.'
+    required: true
+outputs:
+  time: # id of output
+    description: 'The time'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
