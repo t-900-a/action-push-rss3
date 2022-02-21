@@ -62,15 +62,15 @@ module.exports = async function rss3Push(core) {
         core.setFailed(`Event not handled : ${github.context.payload.event_name}`);
         break;
     }
-    console.log('hi');
-    console.log(post);
+    core.info('hi');
+    core.info(post);
 
     try {
       await rss3.items.custom.post(post);
     } catch (err) {
-      console.log('rss3 post failed, double check the endpoint service and private key');
-      console.log(github.context.payload);
-      // console.log(err);
+      core.info('rss3 post failed, double check the endpoint service and private key');
+      core.info(github.context.payload);
+      // core.info(err);
 
       if (err.response) {
         core.setFailed(err.response.data);
