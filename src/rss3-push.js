@@ -62,7 +62,7 @@ module.exports = async function rss3Push(core) {
         core.setFailed(`Event not handled : ${github.context.payload.event_name}`);
         break;
     }
-    core.debug('hi');
+    core.info('hi');
     core.debug(post);
 
     try {
@@ -72,12 +72,7 @@ module.exports = async function rss3Push(core) {
       core.debug('rss3 post failed, double check the endpoint service and private key');
       core.debug(github.context.payload);
       // core.debug(err);
-
-      if (err.response) {
-        core.setFailed(err.response.data);
-      }
-
-      core.setFailed(err.message);
+      core.setFailed(err);
       return;
     }
 
