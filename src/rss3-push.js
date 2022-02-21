@@ -3,7 +3,7 @@ const RSS3 = require('rss3');
 
 module.exports = async function rss3Push(core) {
   try {
-    const endpoint = ( process.env.ENDPOINT === undefined) ? 'https://prenode.rss3.dev' : process.env.ENDPOINT;
+    const endpoint = (process.env.ENDPOINT === undefined) ? 'https://prenode.rss3.dev' : process.env.ENDPOINT;
     const privateKey = process.env.PRIVATEKEY;
 
     if (privateKey === undefined || privateKey.length !== 64) {
@@ -14,69 +14,60 @@ module.exports = async function rss3Push(core) {
       endpoint,
       privateKey,
     });
-  
 
-    let event = github.context.payload.event;
+    const { event } = github.context.payload;
 
-    if (payload) {
-      try {
-        // confirm it is valid json
-        payload = JSON.parse(payload);
-      } catch (e) {
-        // passed in payload wasn't valid json
-        console.error('passed in event was invalid JSON');
-        throw new Error('Need to provide valid JSON event');
-      }
-    }
-
-    var post = {
-      tags:['github','buidl'],
+    const post = {
+      tags: ['github', 'buidl'],
     };
 
     switch (github.context.payload.event_name) {
       case 'push':
-      post.title=`New commit from ${event.pusher.name} to ${event.repository.full_name}`;
-      post.summary=`${event.head_commit.message}`;
-      post.links=[
-        {
-          'type':'text/html',
-          'identifier_custom':`${event.head_commit.url}`,
-        }
-      ];
-      break;
+        post.title = `New commit from ${event.pusher.name} to ${event.repository.full_name}`;
+        post.summary = `${event.head_commit.message}`;
+        post.links = [
+          {
+            type: 'text/html',
+            identifier_custom: `${event.head_commit.url}`,
+          },
+        ];
+        break;
       case 'release':
-      post.title=`New Release published ${event.repository.name} - ${event.release.name}`;
-      post.summary=`New ${event.repository.name} release now available`
-      post.attachments=[
-        {
-          'name': 'Release Download',
-          'address': [`${event.release.zipball_url}`],
-          'mime_type':'application/zip',
+        post.title = `New Release published ${event.repository.name} - ${event.release.name}`;
+        post.summary = `New ${event.repository.name} release now available`;
+        post.attachments = [
+          {
+            name: 'Release Download',
+            address: [`${event.release.zipball_url}`],
+            mime_type: 'application/zip',
 
-        }
-      ];
-      post.links=[
-        {
-          'type':'text/html',
-          'identifier_custom':`${event.release.html_url}`,
-        }
-      ]
-      break;
+          },
+        ];
+        post.links = [
+          {
+            type: 'text/html',
+            identifier_custom: `${event.release.html_url}`,
+          },
+        ];
+        break;
       case 'issues':
-      post.title=`New issue created in ${event.repository.full_name}`;
-      post.summary=`issue title todo`;
-      break;
+        post.title = `New issue created in ${event.repository.full_name}`;
+        post.summary = 'issue title todo';
+        break;
       case 'pull_request':
-      post.title=`New pull request ${event.repository.name}`;
-      post.summary=`pull request submitted by ... todo`;
-      break;
+        post.title = `New pull request ${event.repository.name}`;
+        post.summary = 'pull request submitted by ... todo';
+        break;
+      default:
+        core.setFailed(`Event not handled : ${github.context.payload.event_name}`);
+        break;
     }
 
     try {
       await rss3.items.custom.post(post);
     } catch (err) {
       console.log('rss3 post failed, double check the endpoint service and private key');
-      console.log(payload);
+      console.log(github.context.payload);
       // console.log(err);
 
       if (err.response) {
