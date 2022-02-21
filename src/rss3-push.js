@@ -1,5 +1,5 @@
 const github = require('@actions/github');
-const RSS3 = require('rss3');
+const RSS3 = require('rss3').default;
 
 module.exports = async function rss3Push(core) {
   try {
