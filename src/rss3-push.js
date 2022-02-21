@@ -21,7 +21,9 @@ module.exports = async function rss3Push(core) {
       tags: ['github', 'buidl'],
     };
 
-    switch (github.context.event_name) {
+    core.debug(github.context.eventName);
+
+    switch (github.context.eventName) {
       case 'push':
         post.title = `New commit from ${event.pusher.name} to ${event.repository.full_name}`;
         post.summary = `${event.head_commit.message}`;
@@ -62,7 +64,6 @@ module.exports = async function rss3Push(core) {
         core.setFailed(`Event not handled : ${github.context.payload.event_name}`);
         break;
     }
-    core.info('hi');
     core.debug(post);
 
     try {
