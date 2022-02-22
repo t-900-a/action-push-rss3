@@ -27,30 +27,18 @@ module.exports = async function rss3Push(core) {
       case 'push':
         post.title = `New commit from ${event.pusher.name} to ${event.repository.full_name}`;
         post.summary = `${event.head_commit.message}`;
-        post.links = [
-          {
-            type: 'text/html',
-            identifier_custom: `${event.head_commit.url}`,
-          },
-        ];
+        post.link = {
+          id: `${event.head_commit.id}`,
+          target: `${event.head_commit.url}`,
+        };
         break;
       case 'release':
         post.title = `New Release published ${event.repository.name} - ${event.release.name}`;
         post.summary = `New ${event.repository.name} release now available`;
-        post.attachments = [
-          {
-            name: 'Release Download',
-            address: [`${event.release.zipball_url}`],
-            mime_type: 'application/zip',
-
-          },
-        ];
-        post.links = [
-          {
-            type: 'text/html',
-            identifier_custom: `${event.release.html_url}`,
-          },
-        ];
+        post.link = {
+            id: `${event.release.name}`,
+            target: `${event.release.zipball_url}`,
+          };
         break;
       case 'issues':
         post.title = `New issue created in ${event.repository.full_name}`;
