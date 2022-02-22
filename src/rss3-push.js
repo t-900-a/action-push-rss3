@@ -20,8 +20,6 @@ module.exports = async function rss3Push(core) {
     const post = {
       tags: ['github', 'buidl'],
     };
-    core.debug('event var');
-    core.debug(event);
 
     switch (github.context.eventName) {
       case 'push':
@@ -52,15 +50,15 @@ module.exports = async function rss3Push(core) {
         core.setFailed(`Event not handled : ${github.context.payload.event_name}`);
         break;
     }
+    core.debug('posting to rss3');
     core.debug(post);
 
     try {
-      core.debug('Inside try block');
       await rss3.items.custom.post(post);
     } catch (err) {
       core.debug('rss3 post failed, double check the endpoint service and private key');
-      core.debug(github.context);
-      // core.debug(err);
+      core.debug(err.stack);
+      core.debug(err);
       core.setFailed(err);
       return;
     }
