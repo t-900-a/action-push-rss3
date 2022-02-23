@@ -1,11 +1,9 @@
 const github = require('@actions/github');
 const RSS3 = require('rss3').default;
-const dns = require('dns');
+
 
 module.exports = async function rss3Push(core) {
   try {
-    dns.lookup('www.google.com', {all:true}, (err, addresses) =>core.debug(addresses[0].address));
-    dns.lookup('prenode.rss3.dev', {all:true}, (err, addresses) =>core.debug(addresses[0].address));
     const endpoint = (process.env.ENDPOINT === undefined) ? 'https://prenode.rss3.dev' : process.env.ENDPOINT;
     const privateKey = process.env.PRIVATEKEY;
 
@@ -57,6 +55,7 @@ module.exports = async function rss3Push(core) {
     core.debug(post);
 
     try {
+      require('axios-debug-log/enable');
       await rss3.items.custom.post(post);
     } catch (err) {
       core.debug('rss3 post failed, double check the endpoint service and private key');
