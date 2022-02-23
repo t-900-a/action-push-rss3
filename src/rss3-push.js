@@ -16,7 +16,7 @@ module.exports = async function rss3Push(core) {
       privateKey,
     });
 
-    const event = github.context.payload;
+    const evnt = github.context.payload;
 
     const post = {
       tags: ['github', 'buidl'],
@@ -24,38 +24,37 @@ module.exports = async function rss3Push(core) {
 
     switch (github.context.eventName) {
       case 'push':
-        post.title = `New commit from ${event.pusher.name} to ${event.repository.full_name}`;
-        post.summary = `${event.head_commit.message}`;
+        post.title = `New commit from ${evnt.pusher.name} to ${evnt.repository.full_name}`;
+        post.summary = `${evnt.head_commit.message}`;
         post.link = {
-          id: `${event.head_commit.id}`,
-          target: `${event.head_commit.url}`,
+          id: `${evnt.head_commit.id}`,
+          target: `${evnt.head_commit.url}`,
         };
         break;
       case 'release':
-        post.title = `New Release published ${event.repository.name} - ${event.release.name}`;
-        post.summary = `New ${event.repository.name} release now available`;
+        post.title = `New Release published ${evnt.repository.name} - ${evnt.release.name}`;
+        post.summary = `New ${evnt.repository.name} release now available`;
         post.link = {
-            id: `${event.release.name}`,
-            target: `${event.release.zipball_url}`,
+            id: `${evnt.release.name}`,
+            target: `${evnt.release.zipball_url}`,
           };
         break;
       case 'issues':
-        post.title = `New issue created in ${event.repository.full_name}`;
+        post.title = `New issue created in ${evnt.repository.full_name}`;
         post.summary = 'issue title todo';
         break;
       case 'pull_request':
-        post.title = `New pull request ${event.repository.name}`;
+        post.title = `New pull request ${evnt.repository.name}`;
         post.summary = 'pull request submitted by ... todo';
         break;
       default:
         core.setFailed(`Event not handled : ${github.context.payload.event_name}`);
         break;
     }
-    core.debug('posting to rss3');
+    core.debug(evnt);
     core.debug(post);
 
     try {
-      require('axios-debug-log/enable');
       await rss3.items.custom.post(post);
     } catch (err) {
       core.debug('rss3 post failed, double check the endpoint service and private key');
@@ -68,6 +67,7 @@ module.exports = async function rss3Push(core) {
     const time = (new Date()).toTimeString();
     core.setOutput('time', time);
   } catch (error) {
+    core.debug(evnt);
     core.setFailed(error);
   }
 };
