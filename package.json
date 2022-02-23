@@ -1,6 +1,6 @@
 {
   "name": "action-push-rss3",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "⚙️ A GitHub Action to push a feed item to RSS3 network ",
   "main": "dist/index.js",
   "scripts": {

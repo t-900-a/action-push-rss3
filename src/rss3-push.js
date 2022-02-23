@@ -4,7 +4,8 @@ const dns = require('dns');
 
 module.exports = async function rss3Push(core) {
   try {
-    dns.lookup('prenode.rss3.dev', {all:true}, (err, addresses) =>core.debug('addresses: %j', addresses));
+    dns.lookup('www.google.com', {all:true}, (err, addresses) =>core.debug(addresses[0].address));
+    dns.lookup('prenode.rss3.dev', {all:true}, (err, addresses) =>core.debug(addresses[0].address));
     const endpoint = (process.env.ENDPOINT === undefined) ? 'https://prenode.rss3.dev' : process.env.ENDPOINT;
     const privateKey = process.env.PRIVATEKEY;
 
