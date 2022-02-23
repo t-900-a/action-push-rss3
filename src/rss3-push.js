@@ -4,7 +4,7 @@ const RSS3 = require('rss3').default;
 
 module.exports = async function rss3Push(core) {
   try {
-    const endpoint = (process.env.ENDPOINT === undefined) ? 'https://prenode.rss3.dev' : process.env.ENDPOINT;
+    const endpoint = (!process.env.ENDPOINT || process.env.ENDPOINT.length == 0) ? 'https://prenode.rss3.dev' : process.env.ENDPOINT;
     const privateKey = process.env.PRIVATEKEY;
 
     if (privateKey === undefined || privateKey.length !== 64) {
