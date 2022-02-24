@@ -1,4 +1,4 @@
-name: Integration Test
+name: Push RSS3
 on:
   [push,pull_request,issues,release]
 jobs:
@@ -7,7 +7,7 @@ jobs:
     steps:
     - name: Post to RSS3
       id: RSS3
-      uses: t-900-a/action-push-rss3@v0.0.22
+      uses: t-900-a/action-push-rss3@v0.1.0
       env:
         ENDPOINT: ${{ secrets.ENDPOINT }}
         PRIVATEKEY: ${{ secrets.PRIVATEKEY }}
