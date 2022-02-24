@@ -41,7 +41,7 @@ module.exports = async function rss3Push(core) {
         break;
       case 'issues':
         post.title = `Issue ${evnt.action} in ${evnt.repository.full_name}`;
-        post.summary = `${evnt.issue.title}\n\n${evnt.issue.body}`;
+        post.summary = `${evnt.issue.title}\n\n${evnt.issue.body.substring(0,100)}...`;
         post.link = {
           id: `${evnt.issue.number}`,
           target: `${evnt.issue.html_url}`,
@@ -49,7 +49,7 @@ module.exports = async function rss3Push(core) {
         break;
       case 'pull_request':
         post.title = `Pull request ${evnt.action} in ${evnt.repository.full_name}`;
-        post.summary = `${evnt.pull_request.title}\n\n${evnt.pull_request.body}`;
+        post.summary = `${evnt.pull_request.title}\n\n${evnt.pull_request.body.substring(0,100)}...`;
         post.link = {
           id: `${evnt.pull_request.number}`,
           target: `${evnt.pull_request.html_url}`,
