@@ -40,12 +40,20 @@ module.exports = async function rss3Push(core) {
           };
         break;
       case 'issues':
-        post.title = `New issue created in ${evnt.repository.full_name}`;
-        post.summary = 'issue title todo';
+        post.title = `Issue ${evnt.action} in ${evnt.repository.full_name}`;
+        post.summary = `${evnt.issue.title}\n\n${evnt.issue.body}`;
+        post.link = {
+          id: `${evnt.issue.number}`,
+          target: `${evnt.issue.html_url}`,
+        };
         break;
       case 'pull_request':
-        post.title = `New pull request ${evnt.repository.name}`;
-        post.summary = 'pull request submitted by ... todo';
+        post.title = `Pull request ${evnt.action} in ${evnt.repository.full_name}`;
+        post.summary = `${evnt.pull_request.title}\n\n${evnt.pull_request.body}`;
+        post.link = {
+          id: `${evnt.pull_request.number}`,
+          target: `${evnt.pull_request.html_url}`,
+        };
         break;
       default:
         core.setFailed(`Event not handled : ${github.context.payload.event_name}`);
