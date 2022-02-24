@@ -25,7 +25,6 @@ Add this Action as a [step][job-step] to your project's GitHub Action Workflow f
 ## Contributing
 
 See [CONTRIBUTING](.github/contributing.md).
-
 ## License
 
 See [LICENSE](LICENSE).
