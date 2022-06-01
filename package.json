@@ -31,7 +31,7 @@
   "homepage": "https://github.com/t-900-a/action-push-rss3#readme",
   "dependencies": {
     "@actions/core": "^1.6.0",
-    "@actions/github": "^5.0.0",
+    "@actions/github": "^5.0.3",
     "axios-debug-log": "^0.8.4",
     "rss3": "^0.8.19"
   },
